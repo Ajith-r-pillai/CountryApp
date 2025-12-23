@@ -56,7 +56,7 @@ const Filters = ({ setRegion, setPopulation }) => {
           onChange={(e) => setPopulation(e.target.value)}
           className="appearance-none px-5 py-3 pr-10 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer transition-all shadow-sm hover:shadow-md"
         >
-          <option value="">👥 All Population</option>
+          <option value=""> All Population</option>
           <option value="low">&lt; 10M</option>
           <option value="mid">10M – 50M</option>
           <option value="high">&gt; 50M</option>
