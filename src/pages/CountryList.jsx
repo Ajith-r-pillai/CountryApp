@@ -1,18 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
+import debounce from "lodash.debounce";
 import { fetchCountries } from "../services/api";
 import CountryCard from "../components/CountryCard";
 import Filters from "../components/Filters";
 import SearchBar from "../components/SearchBar";
 import SkeletonCard from "../components/SkeletonCard";
-
-// Simple debounce function
-const debounce = (func, delay) => {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => func(...args), delay);
-  };
-};
 
 const CountryList = () => {
   const [countries, setCountries] = useState([]);
@@ -23,7 +15,7 @@ const CountryList = () => {
   const [region, setRegion] = useState("");
   const [population, setPopulation] = useState("");
 
-  // Async fetch handler
+
   const loadCountries = async () => {
     setLoading(true);
     try {
@@ -40,23 +32,42 @@ const CountryList = () => {
     loadCountries();
   }, []);
 
-  // Debounce search input
+  
   const handleSearchDebounced = useCallback(
-    debounce((value) => setDebouncedSearch(value), 500),
+    debounce((value) => {
+      setDebouncedSearch(value);
+    }, 500),
     []
   );
 
   useEffect(() => {
     handleSearchDebounced(search);
+
+    
+    return () => {
+      handleSearchDebounced.cancel();
+    };
   }, [search, handleSearchDebounced]);
 
   const filtered = countries.filter((c) => {
-    if (debouncedSearch && !c.name.common.toLowerCase().includes(debouncedSearch.toLowerCase()))
+    if (
+      debouncedSearch &&
+      !c.name.common.toLowerCase().includes(debouncedSearch.toLowerCase())
+    )
       return false;
+
     if (region && c.region !== region) return false;
+
     if (population === "low" && c.population >= 10_000_000) return false;
-    if (population === "mid" && (c.population < 10_000_000 || c.population > 50_000_000)) return false;
+
+    if (
+      population === "mid" &&
+      (c.population < 10_000_000 || c.population > 50_000_000)
+    )
+      return false;
+
     if (population === "high" && c.population <= 50_000_000) return false;
+
     return true;
   });
 
@@ -66,7 +77,6 @@ const CountryList = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      
         <div className="space-y-6 mb-8">
           <SearchBar value={search} onChange={setSearch} />
           <Filters setRegion={setRegion} setPopulation={setPopulation} />
