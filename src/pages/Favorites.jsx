@@ -7,7 +7,7 @@ const Favorites = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       {favorites.length === 0 ? (
-        // ❌ No favorites view
+      
         <div className="flex items-center justify-center min-h-screen px-4">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -25,7 +25,7 @@ const Favorites = () => {
           </div>
         </div>
       ) : (
-        // ✅ Favorites list view
+      
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 flex items-center">
